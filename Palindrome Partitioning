@@ -1,0 +1,36 @@
+public class Solution {
+    boolean[][] check;
+    public List<List<String>> partition(String s) {
+        List<String> sol=new ArrayList<String>();
+        List<List<String>> res=new ArrayList<List<String>>();
+        check=new boolean[s.length()][s.length()];
+        bt(s,sol,res,0);
+        return res;
+    }
+    public void bt(String s, List<String> sol, List<List<String>> res, int idx){
+        if(idx==s.length()){
+            res.add(new ArrayList<String>(sol));
+            return;
+        }
+        else{
+            for(int i=idx;i<s.length();i++){
+                if(isPalindrome(s,idx,i)){
+                    sol.add(s.substring(idx,i));
+                    bt(s,sol,res,idx+1);
+                    sol.remove(sol.size()-1);
+                }
+            }
+        }
+    }
+    public boolean isPalindrome(String s, int idx, int i){
+        int l=idx;
+        int r=i;
+        while(l<=r){
+            if(check[l][r]){break;}
+            if(s.charAt(l)!=s.charAt(r)){return false;}
+            else{l++;r--;}
+        }
+        check[idx][i]=true;
+        return true;
+    }
+}
