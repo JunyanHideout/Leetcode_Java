@@ -1,0 +1,12 @@
+import java.util.*;
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Hashtable<Integer, Integer> hs=new Hashtable<Integer, Integer>();
+        int[] res=new int[2];
+        for(int i=0;i<nums.length;i++){
+            if(hs.containsKey(target-nums[i])){res[0]=hs.get(target-nums[i]);res[1]=i+1;return res;}
+            else{hs.put(nums[i],i+1);}
+        }
+        return res;
+    }
+}
