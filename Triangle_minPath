@@ -1,34 +1,12 @@
 import java.util.Hashtable;
 public class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
-        int[] min=new int[1];
-        Hashtable<Integer,Integer> sub=new Hashtable<Integer, Integer>();
-        min[0]=Integer.MAX_VALUE;
-        if(triangle.size()==1){return triangle.get(0).get(0);}
-        for(int i=0;i<triangle.size();i++){dp(triangle,sub,triangle.size(),i,min);}
-        return min[0];
-    }
-    public int dp(List<List<Integer>> triangle, Hashtable<Integer, Integer> sub, int lv, int idx, int[] min){
-      if(lv<=1){return triangle.get(0).get(0);}
-        else{
-            int n1=Integer.MAX_VALUE;
-            int n2=Integer.MAX_VALUE;
-            if(idx>0){
-                if(sub.containsKey((lv-2)*(lv-1)+idx-1)){
-                    n1=sub.get((lv-2)*(lv-1)+idx-1)+triangle.get(lv-1).get(idx);
-                }
-                else{n1=triangle.get(lv-1).get(idx)+dp(triangle,sub,lv-1,idx-1,min);}
+        List<Integer> min=triangle.get(triangle.size()-1);
+        for(int i=triangle.size()-2;i>=0;i--){
+            for(int j=0;j<triangle.get(i).size();j++){
+                min.set(j,triangle.get(i).get(j)+Math.min(min.get(j),min.get(j+1)));
             }
-            if(idx<lv-1){
-                if(sub.containsKey((lv-2)*(lv-1)+idx)){
-                    n2=sub.get((lv-2)*(lv-1)+idx)+triangle.get(lv-1).get(idx);
-                }
-                else{n2=triangle.get(lv-1).get(idx)+dp(triangle,sub,lv-1,idx,min);}
-            }
-            int mincurrent=Math.min(n1, n2);
-            sub.put(lv*(lv-1)+idx,mincurrent);
-            if(lv==triangle.size()){ min[0]=Math.min(min[0],mincurrent);}
-            return mincurrent;
         }
+        return min.get(0);
     }
 }
