@@ -1,0 +1,19 @@
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        Arrays.sort(nums);
+        List<Integer> sol=new ArrayList<Integer>();
+        List<List<Integer>> res=new ArrayList<List<Integer>>();
+        int cbnt=(int)Math.pow(2,nums.length);
+        for(int i=0;i<cbnt;i++){
+            int tmp=i;
+            for(int j=0;j<nums.length;j++){
+                if(tmp==0) break;
+                if((tmp&1)==1) sol.add(nums[j]);
+                tmp=tmp>>1;
+            }
+            res.add(new ArrayList<Integer>(sol));
+            sol.removeAll(sol);
+        }
+        return res;
+    }
+}
