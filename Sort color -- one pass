@@ -1,0 +1,15 @@
+public class Solution {
+    public void sortColors(int[] n) {
+        int l=0;
+        int r=n.length-1;
+        for(int i=0;i<r+1;i++){
+            while(n[i]==2 && i<r){swap(n,i,r--);}
+            while(n[i]==0 && i>l){swap(n,i,l++);}
+        }
+    }
+    public void swap(int[] n, int a, int b){
+        n[a]=n[a]+n[b];
+        n[b]=n[a]-n[b];
+        n[a]=n[a]-n[b];
+    }
+}
