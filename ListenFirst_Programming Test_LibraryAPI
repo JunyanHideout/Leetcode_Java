@@ -1,0 +1,75 @@
+package libraryWithSynonyms;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
+public class library1 {
+	Hashtable<String, String> libra=new Hashtable<String, String>(); //word and its meaning
+	List<String> listofwords=new ArrayList<String>(); //List of words, in order to look up word using index. 
+	List<Integer> SynRelation=new ArrayList<Integer>(); //Elements represent the group index of each word.
+	
+	//Add a word into the library
+	public boolean addword(String s, String m){
+		if(libra.containsKey(s)) return false; //Not allow duplications in the library
+		libra.put(s, m);
+		listofwords.add(s);
+		SynRelation.add(SynRelation.size());
+		return true;
+	}
+	
+	//Look up the meaning of a word;
+	public String getMeaning(String s){
+		//O(1) time to get a word's meaning;
+		
+		if(!libra.containsKey(s)){return "No such a word.";} //for wrong input. 
+		return libra.get(s);
+	}
+	
+	//Add synonymous relation of two words 
+	public boolean AddSynonym(String a, String b){
+		//O(n) time to add synonyms
+		//Main idea is to update the group relation array, the index of the array represent a word, 
+		//and its value is the group index, which is also index of one of the word in the same group.
+		
+		if((!libra.containsKey(a)) || (!libra.containsKey(b))){return false;}
+		//Make sure two input are existed words in library.
+		
+		int ia=0;
+		int ib=0;
+		
+		//look up indexes of both inputs;
+		for(int i=0;i<listofwords.size();i++){
+			if(listofwords.get(i)==a) ia=i;
+			if(listofwords.get(i)==b) ib=i;
+		}
+		
+		//update the relation array;
+		for(int i=0;i<SynRelation.size();i++){
+			if(SynRelation.get(i)==SynRelation.get(ib)){SynRelation.set(i, SynRelation.get(ia));}
+		}
+		return true;
+	}
+	
+	//Return the list of synonyms of a given word, including itself;
+	public List<String> getAllSyn(String a){
+		//O(n) time to look up synonyms.
+		List<String> res=new ArrayList<String>();
+		int ia=0;
+		for(int i=0;i<listofwords.size();i++){
+			if(listofwords.get(i)==a){ia=i;}
+		}
+		for(int i=0;i<listofwords.size();i++){
+			if(SynRelation.get(i)==SynRelation.get(ia)){res.add(listofwords.get(i));}
+		}
+		return res;
+	}
+	
+	//Return the whole library
+	public List<String> getAllWords(){
+		return listofwords;
+	}
+	public List<Integer> getRelation(){
+		return SynRelation;
+	}
+
+}
