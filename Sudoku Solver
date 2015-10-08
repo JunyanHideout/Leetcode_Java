@@ -1,0 +1,45 @@
+public class Solution {
+    public void solveSudoku(char[][] board) {
+        List<HashSet<Character>> h=new ArrayList<HashSet<Character>>();
+        for(int i=0;i<27;i++){h.add(new HashSet<Character>());}
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j]!='.'){
+                    h.get(i).add(board[i][j]);
+                    h.get(j+9).add(board[i][j]);
+                    h.get(ssi(i,j)).add(board[i][j]);
+                }
+            }
+        }
+        dfs(board,0,h);
+    }
+    public int ssi(int i, int j){
+        int res=0;
+        res=(i/3)*3+j/3;
+        return res+18;
+    }
+    public boolean dfs(char[][] b, int idx, List<HashSet<Character>> h){
+        int i=idx/9;
+        int j=idx%9;
+        while(idx<81 && b[i][j]!='.'){idx++;i=idx/9;j=idx%9;}
+        if(idx>=81){return true;}
+        else{
+            for(int n=1;n<10;n++){
+                char nc=(char)(n+48);
+                if(!(h.get(i).contains(nc)||h.get(j+9).contains(nc)||h.get(ssi(i,j)).contains(nc))){
+                    h.get(i).add(nc);
+                    h.get(j+9).add(nc);
+                    h.get(ssi(i,j)).add(nc);
+                    b[i][j]=nc;
+                    boolean re=dfs(b,idx+1,h);
+                    if(re) return true;
+                    h.get(i).remove(nc);
+                    h.get(j+9).remove(nc);
+                    h.get(ssi(i,j)).remove(nc);
+                    b[i][j]='.';
+                }
+            }
+            return false;
+        }
+    }
+}
